@@ -722,3 +722,117 @@ function tickets(peopleInLine){
 }
 
 
+/**
+==========================
+
+19. RGB To Hex Conversion
+
+The rgb function is incomplete. Complete it so that passing in RGB decimal values will result in a hexadecimal representation being returned. Valid decimal values for RGB are 0 - 255. Any values that fall out of that range must be rounded to the closest valid value.
+
+Note: Your answer should always be 6 characters long, the shorthand with 3 will not work here.
+
+The following are examples of expected output values:
+
+rgb(255, 255, 255) // returns FFFFFF
+rgb(255, 255, 300) // returns FFFFFF
+rgb(0,0,0) // returns 000000
+rgb(148, 0, 211) // returns 9400D3
+
+decimal to hex:
+hexString = yourNumber.toString(16);
+hex to decimal:
+yourNumber = parseInt(hexString, 16);
+
+==========================
+**/
+
+
+
+
+function dataFormat(num) {
+  if(num > 255){
+    return 255;
+  }else if(num < 0){
+    return 0;
+  }
+  return num;
+}
+
+function decimalToHex(d) {
+  let hex = Number(d).toString(16).toUpperCase();
+  if(hex.length < 2){
+    hex = "0" + hex;
+  }
+  return hex;
+}
+
+
+function rgb(r, g, b){
+  // complete this function  
+  r = dataFormat(r);
+  g = dataFormat(g);
+  b = dataFormat(b);
+
+  let result = "";
+  result = decimalToHex(r) + decimalToHex(g) + decimalToHex(b);
+  return result;
+}
+
+console.log(rgb(0, 255, 255));
+
+/* 
+
+better solution:
+
+function rgb(r, g, b){
+  return toHex(r)+toHex(g)+toHex(b);
+}
+
+function toHex(d) {
+    if(d < 0 ) {return "00";}
+    if(d > 255 ) {return "FF";}
+    return  ("0"+(Number(d).toString(16))).slice(-2).toUpperCase()
+}
+
+*/
+
+/**
+==========================
+
+20. Pete the baker
+
+Pete likes to bake some cakes. He has some recipes and ingredients. Unfortunately he is not good in maths. Can you help him to find out, how many cakes he could bake considering his recipes?
+
+Write a function cakes(), which takes the recipe (object) and the available ingredients (also an object) and returns the maximum number of cakes Pete can bake (integer). For simplicity there are no units for the amounts (e.g. 1 lb of flour or 200 g of sugar are simply 1 or 200). Ingredients that are not present in the objects, can be considered as 0.
+
+Examples:
+
+// must return 2
+cakes({flour: 500, sugar: 200, eggs: 1}, {flour: 1200, sugar: 1200, eggs: 5, milk: 200}); 
+// must return 0
+cakes({apples: 3, flour: 300, sugar: 150, milk: 100, oil: 100}, {sugar: 500, flour: 2000, milk: 2000});
+
+==========================
+**/
+
+function cakes(recipeObj, ingredientsObj){
+
+  const recipeList = Object.keys(recipeObj);
+  let recipeCount, ingredientsCount = 0;
+  let minCount = Math.floor(ingredientsObj[recipeList[0]] / recipeObj[recipeList[0]]);
+
+  for(let i = 0; i < recipeList.length; i++ ){
+    recipeCount = recipeObj[recipeList[i]];
+    ingredientsCount = ingredientsObj[recipeList[i]];
+
+    //if this ingredient is not included
+    if(!ingredientsCount){
+      return 0;
+    }else{
+      minCount >  Math.floor(ingredientsCount / recipeCount) ? minCount = Math.floor(ingredientsCount / recipeCount) : minCount;
+    }
+  }
+
+  return minCount;
+
+}
