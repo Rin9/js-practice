@@ -952,32 +952,87 @@ function add(n){
 /**
 ==========================
 
-23. My smallest code interpreter (aka Brainf**k)
+23. The observed PIN
 
-Inspired from real-world Brainf**k, we want to create an interpreter of that language which will support the following instructions:
+Alright, detective, one of our colleagues successfully observed our target person, Robby the robber. We followed him to a secret warehouse, where we assume to find all the stolen stuff. The door to this warehouse is secured by an electronic combination lock. Unfortunately our spy isn't sure about the PIN he saw, when Robby entered it.
 
-> increment the data pointer (to point to the next cell to the right).
-< decrement the data pointer (to point to the next cell to the left).
-+ increment (increase by one, truncate overflow: 255 + 1 = 0) the byte at the data pointer.
-- decrement (decrease by one, treat as unsigned byte: 0 - 1 = 255 ) the byte at the data pointer.
-. output the byte at the data pointer.
-, accept one byte of input, storing its value in the byte at the data pointer.
-[ if the byte at the data pointer is zero, then instead of moving the instruction pointer forward to the next command, jump it forward to the command after the matching ] command.
-] if the byte at the data pointer is nonzero, then instead of moving the instruction pointer forward to the next command, jump it back to the command after the matching [ command.
-The function will take in input...
+The keypad has the following layout:
 
-the program code, a string with the sequence of machine instructions,
-the program input, a string, eventually empty, that will be interpreted as an array of bytes using each character's ASCII code and will be consumed by the , instruction
-... and will return ...
+┌───┬───┬───┐
+│ 1 │ 2 │ 3 │
+├───┼───┼───┤
+│ 4 │ 5 │ 6 │
+├───┼───┼───┤
+│ 7 │ 8 │ 9 │
+└───┼───┼───┘
+    │ 0 │
+    └───┘
+He noted the PIN 1357, but he also said, it is possible that each of the digits he saw could actually be another adjacent digit (horizontally or vertically, but not diagonally). E.g. instead of the 1 it could also be the 2 or 4. And instead of the 5 it could also be the 2, 4, 6 or 8.
 
-the output of the interpreted code (always as a string), produced by the . instruction.
-Implementation-specific details for this Kata:
+He also mentioned, he knows this kind of locks. You can enter an unlimited amount of wrong PINs, they never finally lock the system or sound the alarm. That's why we can try out all possible (*) variations.
 
-Your memory tape should be large enough - the original implementation had 30,000 cells but a few thousand should suffice for this Kata
-Each cell should hold an unsigned byte with wrapping behavior (i.e. 255 + 1 = 0, 0 - 1 = 255), initialized to 0
-The memory pointer should initially point to a cell in the tape with a sufficient number (e.g. a few thousand or more) of cells to its right. For convenience, you may want to have it point to the leftmost cell initially
-You may assume that the , command will never be invoked when the input stream is exhausted
-Error-handling, e.g. unmatched square brackets and/or memory pointer going past the leftmost cell is not required in this Kata. If you see test cases that require you to perform error-handling then please open an Issue in the Discourse for this Kata (don't forget to state which programming language you are attempting this Kata in).
+* possible in sense of: the observed PIN itself and all variations considering the adjacent digits
+
+Can you help us to find all those variations? It would be nice to have a function, that returns an array (or a list in Java and C#) of all variations for an observed PIN with a length of 1 to 8 digits. We could name the function getPINs (get_pins in python, GetPINs in C#). But please note that all PINs, the observed one and also the results, must be strings, because of potentially leading '0's. We already prepared some test cases for you.
+
+Detective, we are counting on you!
 
 ==========================
 **/
+
+
+function getPINs(observed) {
+  // TODO: This is your job, detective!
+  const numberPossible = {
+    "0": ["8"],
+		"1": ["2", "4"],
+		"2": ["1", "3", "5"],
+		"3": ["2", "6"],
+		"4": ["1", "5", "7"],
+		"5": ["2", "4", "6", "8"],
+		"6": ["3", "5", "9"],
+		"7": ["4", "8"],
+		"8": ["5", "7", "9", "0"],
+		"9": ["6", "8"]
+  }
+  let result = [];
+  const strDigits = observed.toString().split("");
+  
+  getCombos(strDigits, 0, "");
+  return result;
+
+  // Depth first combinatorial traversal
+	function getCombos(digits, idx, curCombo) {
+
+		// Get possible candidates
+		var curDigit = digits[idx];
+		var candidates = new Set(numberPossible[curDigit]);
+		candidates.add(curDigit);
+
+		//console.log(digits, idx, curCombo, candidates); // Pretty cool
+		candidates.forEach(idx == digits.length - 1 ? reachedEnd : goDeeper);
+
+		// (Avoiding anon funcs)
+		function reachedEnd(candidate) { result.push(curCombo + candidate); }
+		function goDeeper(candidate) {
+			getCombos(digits, idx + 1, curCombo + candidate)
+		}
+	}
+}
+
+console.log(getPINs("11"));
+
+/**
+==========================
+
+24. Last digit of a large number
+
+Examples
+lastDigit("4", "1")            // returns 4
+lastDigit("4", "2")            // returns 6
+lastDigit("9", "7")            // returns 9    
+lastDigit("10","10000000000")  // returns 0
+
+==========================
+**/
+
