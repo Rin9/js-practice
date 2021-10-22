@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Andada+Pro:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Andada+Pro:wght@500&display=swap");
 
 * {
   margin: 0;
@@ -29,7 +29,6 @@ html {
 .todo-container {
   height: 70vh;
   overflow-y: scroll;
-  
 }
 
 ::-webkit-scrollbar {
@@ -38,17 +37,17 @@ html {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
 .todo-list {
@@ -65,7 +64,7 @@ html {
   font-size: 5rem;
   margin: 1rem 0;
   padding: 1rem;
-  border-bottom: goldenrod solid .3rem;
+  border-bottom: goldenrod solid 0.3rem;
   width: 100rem;
   text-align: start;
   cursor: pointer;
@@ -75,20 +74,18 @@ html {
 
 .done {
   color: rgb(153, 133, 132);
-  border-bottom: .3rem solid rgb(230, 228, 179);
+  border-bottom: 0.3rem solid rgb(230, 228, 179);
   text-decoration-line: line-through;
 }
 
 .fa-times {
-
   font-size: 5rem;
   color: #f1f1f1;
   position: absolute;
   right: 0;
-  transition: color .5s ease;
+  transition: color 0.5s ease;
 }
 
 .fa-times:hover {
   color: rgb(230, 53, 53);
 }
-
